@@ -13,13 +13,6 @@ CREATE TABLE missing_persons (
   report_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
   );
 
-CREATE TABLE anonymous_reports (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  description TEXT,
-  location VARCHAR(255),
-  timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-  );
-
 ALTER TABLE missing_persons MODIFY COLUMN photo VARCHAR(255);
 
 SELECT id, report_date FROM missing_persons;
