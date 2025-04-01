@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results</title>
+</head>
+<body>
+    <h2>Search Results</h2>
+
+    {% if matched_person %}
+        <p><strong>Name:</strong> {{ matched_person.name }}</p>
+        <p><strong>Age:</strong> {{ matched_person.age }}</p>
+        <p><strong>Gender:</strong> {{ matched_person.gender }}</p>
+        <p><strong>Last Seen Location:</strong> {{ matched_person.last_seen_location }}</p>
+        <p><strong>Contact Info:</strong> {{ matched_person.contact_info }}</p>
+        <img src="{{ url_for('uploaded_file', filename=matched_person.photo) }}" alt="Matched Person's Photo" width="200">
+    {% elif message %}
+        <p>{{ message }}</p>
+    {% endif %}
+
+    <a href="/">Go Back</a>
+</body>
+</html>
