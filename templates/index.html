@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Missing Persons Tracker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Report a Missing Person</h1>
+        <form id="missingPersonForm" enctype="multipart/form-data" method="POST" action="{{ url_for('add_missing_person') }}">
+            <input type="text" id="name" name="name" placeholder="Full Name" required>
+            <input type="number" id="age" name="age" placeholder="Age" required>
+            <select id="gender" name="gender">
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+            </select>
+            <input type="text" id="location" name="last_seen_location" placeholder="Last Seen Location" required>
+            <input type="text" id="contact" name="contact_info" placeholder="Your Contact Info" required>
+            <input type="file" id="photo" name="photo" accept="image/*" required>
+            <select name="status" id="status" required>
+                <option value="Missing">Missing</option>
+                <option value="Found">Found</option>
+            </select>
+            <button type="submit">Submit Report</button>
+        </form>
+
+        <p id="responseMessage"></p>
+        <p id="successMessage" style="color: green; font-weight: bold;"></p>
+
+        <h2><a href="{{ url_for('view_reports') }}">View Reports</a></h2>
+    </div>
+
+    <script>
+    document.getElementById("missingPersonForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        let formData = new FormData(this);
+
+        fetch('{{ url_for('add_missing_person') }}', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                document.getElementById("successMessage").textContent = data.message || "Report submitted successfully!";
+                document.getElementById("responseMessage").textContent = "";  // Clear any previous error messages
+                document.getElementById("missingPersonForm").reset();  // Clear the form fields after successful submission
+            } else {
+                document.getElementById("responseMessage").textContent = data.message || data.error || "An error occurred. Please try again.";
+                document.getElementById("successMessage").textContent = "";  // Clear any previous success messages
+            }
+        })
+        .catch(error => {
+            document.getElementById("responseMessage").textContent = "An error occurred. Please try again.";
+            document.getElementById("successMessage").textContent = "";  // Clear any previous success messages
+        });
+    });
+    </script>
+</body>
+</html>
